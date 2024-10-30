@@ -5,82 +5,72 @@ public class Character {
     private int health;
     private int level;
     private boolean alive;
+    private int attackRange;
+    private boolean isMelee; 
 
     // Constructor
-    public Character() {
+    public Character(boolean isMelee) {
         this.health = 1000;
         this.level = 1;
         this.alive = true;
+        this.isMelee = isMelee;
+        this.attackRange = isMelee ? 2 : 20;
     }
+
     
-    public void dealDamage(Character target, int damage) {
-
-        if (this == target) {
-            System.out.println("Un personaje no se puede inflingir daño a si mismo.");
-            return; 
-        }
-            if (target.alive) {
-                
-                if (target.level >= this.level + 5) {
-                    damage = (int) (damage * 0.5); 
-                } else if (target.level <= this.level - 5) {
-                    damage = (int) (damage * 1.5); 
-                }
-
-                health = health - damage; 
-                if (health <= 0) {
-                    health = 0; 
-                    alive = false; 
-                    System.out.println("Personaje muerto.");
-                }
-                } else {
-                System.out.println("No se puede hacer daño a un personaje muerto.");
-                }
-    }
-    
-
-    public void heal() {
-        if (this.alive) {
-            if (this.health < 1000) {
-                this.health += 100; 
-                if (this.health > 1000) {
-                    this.health = 1000;
-                }
-                System.out.println("Curar al personaje. Salud actual: " + this.health);
-            } else {
-                System.out.println("El personaje ya tiene la salud maxima.");
-            }
-        } else {
-            System.out.println("Un personaje muerto no se puede curar.");
-        }
-    }
-
     public int getHealth() {
         return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public boolean isAlive() {
         return alive;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
+    public int getAttackRange() {
+        return attackRange;
+    }
+
+   
+    public void dealDamage(Character villan, int damage, int distance) {
+        if (this != villan && villan.isAlive() && isInRange(villan, distance)) {
+            if (villan.getLevel() >= this.level + 5) {
+                damage *= 0.5; // 
+            } else if (villan.getLevel() <= this.level - 5) {
+                damage *= 1.5; // 
+            }
+            villan.receiveDamage(damage);
+        }
+    }
+
+    
+    private void receiveDamage(int damage) {
+        if (alive) {
+            health -= damage;
+            if (health <= 0) {
+                health = 0;
+                alive = false; 
+            }
+        }
+    }
+
+    
+    public void heal(int healAmount) {
+        if (this.isAlive()) { 
+            health = Math.min(health + healAmount, 1000);
+        }
+    }
+
+   
+    private boolean isInRange(Character villan, int distance) {
+        return distance <= this.attackRange;
     }
 
     public void displayStatus() {
-        System.out.println("Health: " + health + ", Level: " + level + ", Alive: " + alive);
+        System.out.println("Health: " + health + ", Level: " + level + ", Alive: " + alive+ "attackRange: " + attackRange + "isMelee= " + isMelee);
     }
 
 
