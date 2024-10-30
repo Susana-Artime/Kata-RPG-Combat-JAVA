@@ -17,37 +17,91 @@ public class Character {
         this.attackRange = isMelee ? 2 : 20;
     }
 
-    
     public int getHealth() {
         return health;
     }
+
+
+
+
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+
+
+
 
     public int getLevel() {
         return level;
     }
 
+
+
+
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+
+
+
+
     public boolean isAlive() {
         return alive;
     }
+
+
+
+
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+
+
+
 
     public int getAttackRange() {
         return attackRange;
     }
 
-   
+
+
+
+
+    public void setAttackRange(int attackRange) {
+        this.attackRange = attackRange;
+    }
+
+
+    public boolean isMelee() {
+        return isMelee;
+    }
+
+
+    public void setMelee(boolean isMelee) {
+        this.isMelee = isMelee;
+        this.attackRange = isMelee ? 2 : 20;
+    }
+
+
     public void dealDamage(Character villan, int damage, int distance) {
         if (this != villan && villan.isAlive() && isInRange(villan, distance)) {
             if (villan.getLevel() >= this.level + 5) {
-                damage *= 0.5; // 
+                damage *= 0.5; 
             } else if (villan.getLevel() <= this.level - 5) {
-                damage *= 1.5; // 
+                damage *= 1.5;
             }
             villan.receiveDamage(damage);
         }
     }
 
     
-    private void receiveDamage(int damage) {
+    public void receiveDamage(int damage) {
         if (alive) {
             health -= damage;
             if (health <= 0) {
@@ -64,7 +118,7 @@ public class Character {
         }
     }
 
-   
+
     private boolean isInRange(Character villan, int distance) {
         return distance <= this.attackRange;
     }
@@ -73,8 +127,10 @@ public class Character {
         System.out.println("Health: " + health + ", Level: " + level + ", Alive: " + alive+ "attackRange: " + attackRange + "isMelee= " + isMelee);
     }
 
-
 }
 
+
+
+    
 
 
